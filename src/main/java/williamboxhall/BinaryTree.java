@@ -9,20 +9,32 @@ public class BinaryTree implements Tree {
         this.root = new Node(rootValue);
     }
 
-    public void insert(int value) {
-        addChildTo(root, value);
+    public Node find(int value) {
+        return findFrom(root, value);
+    }
+
+    public Node insert(int value) {
+        return addChildTo(root, value);
+    }
+
+    private Node findFrom(Node node, int value) {
+        return (node == null || node.value == value) ? node : findFrom(traverse(node, value), value);
+    }
+
+    private Node traverse(Node node, int value) {
+        return (node.value > value) ? node.left : node.right;
     }
 
     public Node addChildTo(Node node, int value) {
-        return node.value > value ? addLeft(node, value) : addRight(node, value);
+        return (node.value > value) ? addLeft(node, value) : addRight(node, value);
     }
 
     private Node addLeft(Node node, int value) {
-        return node.left == null ? createLeft(node, value) : addChildTo(node.left, value);
+        return (node.left == null) ? createLeft(node, value) : addChildTo(node.left, value);
     }
 
     private Node addRight(Node node, int value) {
-        return node.right == null ? createRight(node, value) : addChildTo(node.right, value);
+        return (node.right == null) ? createRight(node, value) : addChildTo(node.right, value);
     }
 
     private Node createRight(Node node, int value) {
@@ -35,25 +47,8 @@ public class BinaryTree implements Tree {
         return node.left;
     }
 
+
     public void delete(int value) {
-    }
-
-    public Node find(int value) {
-        return findFrom(root, value);
-    }
-
-    private Node findFrom(Node node, int value) {
-        if (node == null) {
-            return null;
-        }
-        if (node.value == value) {
-            return node;
-        }
-        return findFrom(traverse(node, value), value);
-    }
-
-    private Node traverse(Node node, int value) {
-        return (node.value > value) ? node.left : node.right;
     }
 
     public class Node {
