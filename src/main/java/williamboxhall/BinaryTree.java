@@ -8,11 +8,9 @@ public class BinaryTree implements Tree {
     public BinaryTree(int rootValue) {
         this.root = new Node(rootValue);
     }
-    
 
     public void insert(int value) {
         root.addChild(value);
-        System.out.println(this);
     }
 
     public void delete(int value) {
@@ -45,28 +43,26 @@ public class BinaryTree implements Tree {
             this.value = value;
         }
 
-        public void addChild(int value) {
-            if (this.value > value) {
-                addLeft(value);
-            } else {
-                addRight(value);
-            }
+        public Node addChild(int value) {
+            return this.value > value ? addLeft(value) : addRight(value);
         }
 
-        private void addLeft(int value) {
-            if (left == null) {
-                left = new Node(value);
-            } else {
-                left.addChild(value);
-            }
+        private Node addLeft(int value) {
+            return left == null ? createLeft(value) : left.addChild(value);
         }
 
-        private void addRight(int value) {
-            if (right == null) {
-                right = new Node(value);
-            } else {
-                right.addChild(value);
-            }
+        private Node addRight(int value) {
+            return right == null ? createRight(value) : right.addChild(value);
+        }
+
+        private Node createRight(int value) {
+            this.right = new Node(value);
+            return right;
+        }
+
+        private Node createLeft(int value) {
+            this.left = new Node(value);
+            return left;
         }
 
         public int value() {
