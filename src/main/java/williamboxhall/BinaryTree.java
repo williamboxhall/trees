@@ -65,14 +65,14 @@ public class BinaryTree implements Tree {
         return deleted;
     }
 
-    private Node replaceWithChildOf(Node deleted) {
-        return deleted.left != null ? deleted.left : deleted.right;
-    }
-
     private Node deleteRight(Node parent) {
         Node deleted = parent.right;
         parent.right = replaceWithChildOf(deleted);
         return deleted;
+    }
+
+    private Node replaceWithChildOf(Node deleted) {
+        return deleted.left != null ? deleted.left : deleted.right;
     }
 
     public class Node {

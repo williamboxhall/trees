@@ -76,7 +76,7 @@ public class BinaryTreeTest {
     }
 
     @Test
-    public void canDeleteNodeWithOneChild() {
+    public void canDeleteNodeWithOneChildWithNoGrandchildren() {
         BinaryTree tree = new BinaryTree(50);
         tree.insert(75);
         tree.insert(85);
@@ -86,6 +86,38 @@ public class BinaryTreeTest {
         tree.delete(75);
         assertThat(tree.find(75), is(nullValue()));
         assertThat(tree.root().right(), is(nodeWithValue(85)));
+    }
+    
+    @Test
+    public void canDeleteNodeWithOneChildWithGrandChildren() {
+        BinaryTree tree = new BinaryTree(50);
+        tree.insert(75);
+        tree.insert(85);
+        tree.insert(90);
+        assertThat(tree.find(75), is(nodeWithValue(75)));
+        assertThat(tree.root().right(), is(nodeWithValue(75)));
+        assertThat(tree.find(75).right(), is(nodeWithValue(85)));
+        assertThat(tree.find(85).right(), is(nodeWithValue(90)));
+        tree.delete(75);
+        assertThat(tree.find(75), is(nullValue()));
+        assertThat(tree.root().right(), is(nodeWithValue(85)));
+        assertThat(tree.find(85).right(), is(nodeWithValue(90)));
+    }
+
+    @Test
+    @Ignore
+    public void canDeleteNodeWithTwoChildren() {
+        BinaryTree tree = new BinaryTree(50);
+        tree.insert(75);
+        tree.insert(65);
+        tree.insert(85);
+        assertThat(tree.find(75), is(nodeWithValue(75)));
+        assertThat(tree.root().right(), is(nodeWithValue(75)));
+        assertThat(tree.find(75).left(), is(nodeWithValue(65)));
+        assertThat(tree.find(75).right(), is(nodeWithValue(85)));
+        tree.delete(75);
+        assertThat(tree.root().right(), is(nodeWithValue(85)));
+        assertThat(tree.find(85).left(), is(nodeWithValue(65)));
     }
 
     @Test
