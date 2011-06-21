@@ -58,6 +58,15 @@ public class BinaryTreeTest {
         assertThat(tree.find(75).left(), is(nullValue()));
         assertThat(tree.find(75).right(), is(nodeWithValue(85)));
     }
+    
+    @Test
+    public void canDeleteLeafNodes() {
+        BinaryTree tree = new BinaryTree(50);
+        tree.insert(75);
+        assertThat(tree.find(75), is(nodeWithValue(75)));
+        tree.delete(75);
+        assertThat(tree.find(75), is(nullValue()));
+    }
 
     private Matcher<BinaryTree.Node> nodeWithValue(final int value) {
         return new TypeSafeMatcher<BinaryTree.Node>() {

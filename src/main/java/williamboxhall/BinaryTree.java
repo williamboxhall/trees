@@ -17,6 +17,10 @@ public class BinaryTree implements Tree {
         return addChildTo(root, value);
     }
 
+    public Node delete(int value) {
+        return delete(find(value));
+    }
+
     private Node findFrom(Node node, int value) {
         return (node == null || node.value == value) ? node : findFrom(traverse(node, value), value);
     }
@@ -37,26 +41,44 @@ public class BinaryTree implements Tree {
         return (node.right == null) ? createRight(node, value) : addChildTo(node.right, value);
     }
 
-    private Node createRight(Node node, int value) {
-        node.right = new Node(value);
-        return node.right;
+    private Node createRight(Node parent, int value) {
+        parent.right = new Node(parent, value);
+        return parent.right;
     }
 
-    private Node createLeft(Node node, int value) {
-        node.left = new Node(value);
-        return node.left;
+    private Node createLeft(Node parent, int value) {
+        parent.left = new Node(parent, value);
+        return parent.left;
     }
 
+    private Node delete(Node node) {
+        return (node == node.parent.left) ? deleteLeft(node.parent) : deleteRight(node.parent);
+    }
 
-    public void delete(int value) {
+    private Node deleteLeft(Node parent) {
+        Node node = parent.left;
+        parent.left = null;
+        return node;
+    }
+
+    private Node deleteRight(Node parent) {
+        Node node = parent.right;
+        parent.right = null;
+        return node;
     }
 
     public class Node {
         private final int value;
         private Node left;
         private Node right;
+        private Node parent;
 
         private Node(int value) {
+            this(null, value);
+        }
+
+        private Node(Node parent, int value) {
+            this.parent = parent;
             this.value = value;
         }
 
