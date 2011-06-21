@@ -9,6 +9,10 @@ public class BinaryTree implements Tree {
         this.root = new Node(rootValue);
     }
 
+    public Node root() {
+        return root;
+    }
+
     public Node find(int value) {
         return findFrom(root, value);
     }
@@ -56,15 +60,19 @@ public class BinaryTree implements Tree {
     }
 
     private Node deleteLeft(Node parent) {
-        Node node = parent.left;
-        parent.left = null;
-        return node;
+        Node deleted = parent.left;
+        parent.left = replaceWithChildOf(deleted);
+        return deleted;
+    }
+
+    private Node replaceWithChildOf(Node deleted) {
+        return deleted.left != null ? deleted.left : deleted.right;
     }
 
     private Node deleteRight(Node parent) {
-        Node node = parent.right;
-        parent.right = null;
-        return node;
+        Node deleted = parent.right;
+        parent.right = replaceWithChildOf(deleted);
+        return deleted;
     }
 
     public class Node {

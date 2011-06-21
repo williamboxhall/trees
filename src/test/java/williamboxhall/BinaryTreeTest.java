@@ -2,6 +2,7 @@ package williamboxhall;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.internal.matchers.TypeSafeMatcher;
 
@@ -16,6 +17,12 @@ public class BinaryTreeTest {
         BinaryTree tree = new BinaryTree(50);
         assertThat(tree.find(50), is(nodeWithValue(50)));
         assertThat(tree.find(25), is(nullValue()));
+    }
+
+    @Test
+    public void exposesRootNode() {
+        BinaryTree tree = new BinaryTree(50);
+        assertThat(tree.root(), is(nodeWithValue(50)));
     }
 
     @Test
@@ -58,7 +65,7 @@ public class BinaryTreeTest {
         assertThat(tree.find(75).left(), is(nullValue()));
         assertThat(tree.find(75).right(), is(nodeWithValue(85)));
     }
-    
+
     @Test
     public void canDeleteLeafNodes() {
         BinaryTree tree = new BinaryTree(50);
@@ -68,15 +75,44 @@ public class BinaryTreeTest {
         assertThat(tree.find(75), is(nullValue()));
     }
 
-    private Matcher<BinaryTree.Node> nodeWithValue(final int value) {
+    @Test
+    public void canDeleteNodeWithOneChild() {
+        BinaryTree tree = new BinaryTree(50);
+        tree.insert(75);
+        tree.insert(85);
+        assertThat(tree.find(75), is(nodeWithValue(75)));
+        assertThat(tree.root().right(), is(nodeWithValue(75)));
+        assertThat(tree.find(75).right(), is(nodeWithValue(85)));
+        tree.delete(75);
+        assertThat(tree.find(75), is(nullValue()));
+        assertThat(tree.root().right(), is(nodeWithValue(85)));
+    }
+
+    @Test
+    @Ignore
+    public void canDeleteRootNode() {
+        BinaryTree tree = new BinaryTree(50);
+        tree.insert(75);
+        assertThat(tree.find(50), is(nodeWithValue(50)));
+        assertThat(tree.root(), is(nodeWithValue(50)));
+        tree.delete(50);
+        assertThat(tree.find(50), is(nullValue()));
+        assertThat(tree.root(), is(nodeWithValue(75)));
+    }
+
+    private Matcher<BinaryTree.Node> nodeWithValue(final int expected) {
         return new TypeSafeMatcher<BinaryTree.Node>() {
+            public BinaryTree.Node actual;
+
             @Override
-            public boolean matchesSafely(BinaryTree.Node node) {
-                return node != null && node.value() == value;
+            public boolean matchesSafely(BinaryTree.Node actual) {
+                this.actual = actual;
+                return actual != null && actual.value() == expected;
             }
 
             public void describeTo(Description description) {
-                description.appendText(format("expected node with value %d", value));
+                description.appendText(format("expected node with value %d but found %d", expected,
+                        actual == null ? null : actual.value()));
             }
         };
     }
