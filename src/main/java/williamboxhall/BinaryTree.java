@@ -10,7 +10,29 @@ public class BinaryTree implements Tree {
     }
 
     public void insert(int value) {
-        root.addChild(value);
+        addChildTo(root, value);
+    }
+
+    public Node addChildTo(Node node, int value) {
+        return node.value > value ? addLeft(node, value) : addRight(node, value);
+    }
+
+    private Node addLeft(Node node, int value) {
+        return node.left == null ? createLeft(node, value) : addChildTo(node.left, value);
+    }
+
+    private Node addRight(Node node, int value) {
+        return node.right == null ? createRight(node, value) : addChildTo(node.right, value);
+    }
+
+    private Node createRight(Node node, int value) {
+        node.right = new Node(value);
+        return node.right;
+    }
+
+    private Node createLeft(Node node, int value) {
+        node.left = new Node(value);
+        return node.left;
     }
 
     public void delete(int value) {
@@ -41,28 +63,6 @@ public class BinaryTree implements Tree {
 
         private Node(int value) {
             this.value = value;
-        }
-
-        public Node addChild(int value) {
-            return this.value > value ? addLeft(value) : addRight(value);
-        }
-
-        private Node addLeft(int value) {
-            return left == null ? createLeft(value) : left.addChild(value);
-        }
-
-        private Node addRight(int value) {
-            return right == null ? createRight(value) : right.addChild(value);
-        }
-
-        private Node createRight(int value) {
-            this.right = new Node(value);
-            return right;
-        }
-
-        private Node createLeft(int value) {
-            this.left = new Node(value);
-            return left;
         }
 
         public int value() {
