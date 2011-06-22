@@ -108,32 +108,6 @@ public class BinaryTree implements Tree {
         second.value = firstValue;
     }
 
-    @Override
-    public String toString() {
-        List<Node> top = Lists.newArrayList(root);
-        List<Node> second = Lists.newArrayList(root.left, root.right);
-        List<Node> thirdLeft = root.left == null ? Lists.<Node>newArrayList(null,
-                null) : Lists.newArrayList(root.left.left, root.left.right);
-        List<Node> thirdRight = root.right == null ? Lists.<Node>newArrayList(null,
-                null) : Lists.newArrayList(root.right.left, root.right.right);
-
-        return print(top, 16) + "\n" + print(second, 8) + "\n" + print(thirdLeft, 4) + print(thirdRight,
-                4) + "\n" + "-----";
-    }
-
-    private String print(List<Node> nodes, int padLength) {
-        String padding = paddingOfLength(padLength);
-        StringBuffer result = new StringBuffer();
-        for (Node node : nodes) {
-            result.append(padding).append(node == null ? "" : node.value).append(padding);
-        }
-        return result.toString();
-    }
-
-    private String paddingOfLength(int padLength) {
-        return Strings.repeat(" ", padLength);
-    }
-
     public class Node {
         private int value;
         private Node left;
@@ -160,5 +134,31 @@ public class BinaryTree implements Tree {
         public Node right() {
             return right;
         }
+    }
+
+    @Override
+    public String toString() {
+        List<Node> top = Lists.newArrayList(root);
+        List<Node> second = Lists.newArrayList(root.left, root.right);
+        List<Node> thirdLeft = root.left == null ? Lists.<Node>newArrayList(null,
+                null) : Lists.newArrayList(root.left.left, root.left.right);
+        List<Node> thirdRight = root.right == null ? Lists.<Node>newArrayList(null,
+                null) : Lists.newArrayList(root.right.left, root.right.right);
+
+        return print(top, 16) + "\n" + print(second, 8) + "\n" + print(thirdLeft, 4) + print(thirdRight,
+                4) + "\n" + "-----";
+    }
+
+    private String print(List<Node> nodes, int padLength) {
+        String padding = paddingOfLength(padLength);
+        StringBuffer result = new StringBuffer();
+        for (Node node : nodes) {
+            result.append(padding).append(node == null ? "" : node.value).append(padding);
+        }
+        return result.toString();
+    }
+
+    private String paddingOfLength(int padLength) {
+        return Strings.repeat(" ", padLength);
     }
 }
