@@ -26,7 +26,9 @@ public class BinaryTree implements Tree {
     }
 
     public Node delete(int value) {
-        return delete(find(value));
+        Node deleted = find(value);
+        delete(deleted);
+        return deleted;
     }
 
     private Node findFrom(Node node, int value) {
@@ -59,36 +61,39 @@ public class BinaryTree implements Tree {
         return parent.left;
     }
 
-    private Node delete(Node node) {
-        return (node == node.parent.left) ? deleteLeft(node.parent) : deleteRight(node.parent);
-    }
-
-    private Node deleteLeft(Node parent) {
-        Node deleted = parent.left;
-        Node replacement = (deleted.left != null) ? deleted.left : deleted.right;
-        if (hasTwoChildren(deleted)) {
-            swapValues(parent.left, replacement);
-            return delete(replacement);
+    private void delete(Node node) {
+        if (node == node.parent.left) {
+            deleteLeft(node.parent);
         } else {
-            parent.left = replacement;
-            return deleted;
+            deleteRight(node.parent);
         }
     }
 
-    private Node deleteRight(Node parent) {
-        Node deleted = parent.right;
-        Node replacement = (deleted.left != null) ? deleted.left : deleted.right;
-        if (hasTwoChildren(deleted)) {
-            swapValues(parent.right, replacement);
-            return delete(replacement);
-        } else {
-            parent.right = replacement;
-            return deleted;
-        }
+    private void deleteLeft(Node parent) {
+        parent.left = replaceWithChildOf(parent.left);
+    }
+
+    private void deleteRight(Node parent) {
+        parent.right = replaceWithChildOf(parent.right);
+    }
+
+    private Node replaceWithChildOf(Node deleted) {
+        Node replacement = replacementFor(deleted);
+        return hasTwoChildren(deleted) ? swapValuesThenDeleteSecond(deleted, replacement) : replacement;
+    }
+
+    private Node replacementFor(Node deleted) {
+        return (deleted.left != null) ? deleted.left : deleted.right;
     }
 
     private boolean hasTwoChildren(Node node) {
         return node.left != null && node.right != null;
+    }
+
+    private Node swapValuesThenDeleteSecond(Node first, Node second) {
+        swapValues(first, second);
+        delete(second);
+        return first;
     }
 
     private void swapValues(Node first, Node second) {
