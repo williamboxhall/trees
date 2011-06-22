@@ -1,6 +1,10 @@
 package williamboxhall;
 
+import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import sun.reflect.generics.tree.Tree;
+
+import java.util.List;
 
 public class BinaryTree implements Tree {
     private Node root;
@@ -61,22 +65,66 @@ public class BinaryTree implements Tree {
 
     private Node deleteLeft(Node parent) {
         Node deleted = parent.left;
-        parent.left = replaceWithChildOf(deleted);
-        return deleted;
+        Node replacement = (deleted.left != null) ? deleted.left : deleted.right;
+        if (hasTwoChildren(deleted)) {
+            swapValues(parent.left, replacement);
+            return delete(replacement);
+        } else {
+            parent.left = replacement;
+            return deleted;
+        }
     }
 
     private Node deleteRight(Node parent) {
         Node deleted = parent.right;
-        parent.right = replaceWithChildOf(deleted);
-        return deleted;
+        Node replacement = (deleted.left != null) ? deleted.left : deleted.right;
+        if (hasTwoChildren(deleted)) {
+            swapValues(parent.right, replacement);
+            return delete(replacement);
+        } else {
+            parent.right = replacement;
+            return deleted;
+        }
     }
 
-    private Node replaceWithChildOf(Node deleted) {
-        return deleted.left != null ? deleted.left : deleted.right;
+    private boolean hasTwoChildren(Node node) {
+        return node.left != null && node.right != null;
+    }
+
+    private void swapValues(Node first, Node second) {
+        int firstValue = first.value;
+        first.value = second.value;
+        second.value = firstValue;
+    }
+
+    @Override
+    public String toString() {
+        List<Node> top = Lists.newArrayList(root);
+        List<Node> second = Lists.newArrayList(root.left, root.right);
+        List<Node> thirdLeft = root.left == null ? Lists.<Node>newArrayList(null,
+                null) : Lists.newArrayList(root.left.left, root.left.right);
+        List<Node> thirdRight = root.right == null ? Lists.<Node>newArrayList(null,
+                null) : Lists.newArrayList(root.right.left, root.right.right);
+
+        return print(top, 16) + "\n" + print(second, 8) + "\n" + print(thirdLeft, 4) + print(thirdRight,
+                4) + "\n" + "-----";
+    }
+
+    private String print(List<Node> nodes, int padLength) {
+        String padding = paddingOfLength(padLength);
+        StringBuffer result = new StringBuffer();
+        for (Node node : nodes) {
+            result.append(padding).append(node == null ? "" : node.value).append(padding);
+        }
+        return result.toString();
+    }
+
+    private String paddingOfLength(int padLength) {
+        return Strings.repeat(" ", padLength);
     }
 
     public class Node {
-        private final int value;
+        private int value;
         private Node left;
         private Node right;
         private Node parent;
