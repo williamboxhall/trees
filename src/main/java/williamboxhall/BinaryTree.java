@@ -10,7 +10,7 @@ public class BinaryTree implements Tree {
     private Node root;
 
     public BinaryTree(int rootValue) {
-        this.root = new Node(rootValue);
+        this.root = createNode(rootValue);
     }
 
     public Node root() {
@@ -39,25 +39,25 @@ public class BinaryTree implements Tree {
         return (node.value > value) ? node.left : node.right;
     }
 
-    public Node addChildTo(Node node, int value) {
+    private Node addChildTo(Node node, int value) {
         return (node.value > value) ? addLeft(node, value) : addRight(node, value);
     }
 
-    private Node addLeft(Node node, int value) {
+    Node addLeft(Node node, int value) {
         return (node.left == null) ? createLeft(node, value) : addChildTo(node.left, value);
     }
 
-    private Node addRight(Node node, int value) {
+    Node addRight(Node node, int value) {
         return (node.right == null) ? createRight(node, value) : addChildTo(node.right, value);
     }
 
     private Node createRight(Node parent, int value) {
-        parent.right = new Node(parent, value);
+        parent.right = createNode(parent, value);
         return parent.right;
     }
 
     private Node createLeft(Node parent, int value) {
-        parent.left = new Node(parent, value);
+        parent.left = createNode(parent, value);
         return parent.left;
     }
 
@@ -108,17 +108,25 @@ public class BinaryTree implements Tree {
         second.value = firstValue;
     }
 
-    public class Node {
+    Node createNode(int rootValue) {
+        return new Node(rootValue);
+    }
+
+    Node createNode(Node parent, int value) {
+        return new Node(parent, value);
+    }
+
+    static class Node {
         private int value;
         private Node left;
         private Node right;
         private Node parent;
 
-        private Node(int value) {
+        Node(int value) {
             this(null, value);
         }
 
-        private Node(Node parent, int value) {
+        Node(Node parent, int value) {
             this.parent = parent;
             this.value = value;
         }
