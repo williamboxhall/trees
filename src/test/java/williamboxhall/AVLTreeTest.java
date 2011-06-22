@@ -7,6 +7,7 @@ import org.junit.internal.matchers.TypeSafeMatcher;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static williamboxhall.BinaryTreeTest.nodeWithValue;
 
 public class AVLTreeTest {
     @Test
@@ -42,6 +43,40 @@ public class AVLTreeTest {
         assertThat(tree.find(50), hasBalanceFactor(-2));
         assertThat(tree.find(75), hasBalanceFactor(-1));
         assertThat(tree.find(85), hasBalanceFactor(0));
+    }
+
+    @Test
+    public void nodeWithTwoChildrenAndNoGrandChildrenHasBalanceFactorOfZero() {
+        AVLTree tree = new AVLTree(50);
+        tree.insert(25);
+        tree.insert(75);
+        assertThat(tree.find(50), hasBalanceFactor(0));
+    }
+
+    @Test
+    public void rightRightUnbalanceFromRootWillChangeRoot() {
+        AVLTree tree = new AVLTree(50);
+        tree.insert(75);
+        assertThat(tree.root(), is(nodeWithValue(50)));
+        tree.insert(85);
+        assertThat(tree.root(), is(nodeWithValue(75)));
+        assertThat(tree.root().left(), is(nodeWithValue(50)));
+        assertThat(tree.root().right(), is(nodeWithValue(85)));
+    }
+
+    @Test
+    public void rightLeftUnbalanceFromRootWillChangeRoot() {
+        AVLTree tree = new AVLTree(50);
+        tree.insert(75);
+        assertThat(tree.root(), is(nodeWithValue(50)));
+        tree.insert(65);
+        assertThat(tree.root(), is(nodeWithValue(65)));
+        assertThat(tree.root().left(), is(nodeWithValue(50)));
+        assertThat(tree.root().right(), is(nodeWithValue(75)));
+    }
+
+    @Test
+    public void insertionThatUnbalancesDescendantOfRootWithChangeDescendant() {
     }
 
     private Matcher<BinaryTree.Node> hasBalanceFactor(final int expected) {

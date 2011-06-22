@@ -129,7 +129,7 @@ public class BinaryTreeTest {
         assertThat(tree.root(), is(nodeWithValue(75)));
     }
 
-    private Matcher<BinaryTree.Node> nodeWithValue(final int expected) {
+    static Matcher<BinaryTree.Node> nodeWithValue(final int expected) {
         return new TypeSafeMatcher<BinaryTree.Node>() {
             public BinaryTree.Node actual;
 

@@ -1,5 +1,7 @@
 package williamboxhall;
 
+import java.util.Stack;
+
 public class AVLTree extends BinaryTree {
     public AVLTree(int rootValue) {
         super(rootValue);
@@ -12,7 +14,22 @@ public class AVLTree extends BinaryTree {
 
     @Override
     Node createNode(Node parent, int value) {
+        balanceAncestors(parent);
         return new BalancedNode(parent, value);
+    }
+
+    private void balanceAncestors(Node node) {
+        //Stack<BalancedNode> stack = findAncestors(node);
+        //balanceFirstUnbalancedIn
+    }
+
+    private Stack<BalancedNode> findAncestors(Node node) {
+        Stack<BalancedNode> stack = new Stack<BalancedNode>();
+        do {
+            stack.push((BalancedNode) node);
+            node = node.parent;
+        } while (node != root);
+        return stack;
     }
 
     @Override

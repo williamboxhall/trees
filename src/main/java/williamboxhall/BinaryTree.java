@@ -7,7 +7,7 @@ import sun.reflect.generics.tree.Tree;
 import java.util.List;
 
 public class BinaryTree implements Tree {
-    private Node root;
+    Node root;
 
     public BinaryTree(int rootValue) {
         this.root = createNode(rootValue);
@@ -51,12 +51,12 @@ public class BinaryTree implements Tree {
         return (node.right == null) ? createRight(node, value) : addChildTo(node.right, value);
     }
 
-    private Node createRight(Node parent, int value) {
+    Node createRight(Node parent, int value) {
         parent.right = createNode(parent, value);
         return parent.right;
     }
 
-    private Node createLeft(Node parent, int value) {
+    Node createLeft(Node parent, int value) {
         parent.left = createNode(parent, value);
         return parent.left;
     }
@@ -120,7 +120,7 @@ public class BinaryTree implements Tree {
         private int value;
         private Node left;
         private Node right;
-        private Node parent;
+        Node parent;
 
         Node(int value) {
             this(null, value);
