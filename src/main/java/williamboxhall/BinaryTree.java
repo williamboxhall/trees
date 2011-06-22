@@ -88,6 +88,8 @@ public class BinaryTree implements Tree {
         return hasTwoChildren(deleted) ? swapValuesThenDeleteSecond(deleted, replacement) : replacement;
     }
 
+    // TODO this is incorrect, this should be the in-order successor/predecessor in the case of a node with two
+    // children
     private Node replacementFor(Node deleted) {
         return (deleted.left != null) ? deleted.left : deleted.right;
     }
@@ -96,6 +98,8 @@ public class BinaryTree implements Tree {
         return node.left != null && node.right != null;
     }
 
+    // TODO this is incorrect, an recursive removal is not required, just a hard delete as the second node here
+    // should have no children if it was chosen correctly by replacementFor
     private Node swapValuesThenDeleteSecond(Node first, Node second) {
         swapValues(first, second);
         delete(second);
