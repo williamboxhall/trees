@@ -93,13 +93,11 @@ public class BinaryTreeTest {
         tree.insert(75);
         tree.insert(85);
         tree.insert(90);
-        System.out.println(tree);
         assertThat(tree.find(75), is(nodeWithValue(75)));
         assertThat(tree.root().right(), is(nodeWithValue(75)));
         assertThat(tree.find(75).right(), is(nodeWithValue(85)));
         assertThat(tree.find(85).right(), is(nodeWithValue(90)));
         tree.delete(75);
-        System.out.println(tree);
         assertThat(tree.find(75), is(nullValue()));
         assertThat(tree.root().right(), is(nodeWithValue(85)));
         assertThat(tree.find(85).right(), is(nodeWithValue(90)));
@@ -111,13 +109,11 @@ public class BinaryTreeTest {
         tree.insert(75);
         tree.insert(65);
         tree.insert(85);
-        System.out.println(tree);
         assertThat(tree.find(75), is(nodeWithValue(75)));
         assertThat(tree.root().right(), is(nodeWithValue(75)));
         assertThat(tree.find(75).left(), is(nodeWithValue(65)));
         assertThat(tree.find(75).right(), is(nodeWithValue(85)));
         tree.delete(75);
-        System.out.println(tree);
         assertThat(tree.root().right(), is(nodeWithValue(65)));
         assertThat(tree.find(65).right(), is(nodeWithValue(85)));
     }
@@ -126,32 +122,11 @@ public class BinaryTreeTest {
     public void canDeleteRootNode() {
         BinaryTree tree = new BinaryTree(50);
         tree.insert(75);
-        System.out.println(tree);
         assertThat(tree.find(50), is(nodeWithValue(50)));
         assertThat(tree.root(), is(nodeWithValue(50)));
         tree.delete(50);
-        System.out.println(tree);
         assertThat(tree.find(50), is(nullValue()));
         assertThat(tree.root(), is(nodeWithValue(75)));
-    }
-
-    @Test
-    public void hasUsefulToString() {
-        BinaryTree tree = new BinaryTree(50);
-        tree.insert(25);
-        tree.insert(75);
-        tree.insert(15);
-        tree.insert(35);
-        tree.insert(65);
-        tree.insert(85);
-
-        StringBuffer expected = new StringBuffer();
-        expected.append("                [50]                \n");
-        expected.append("        [25]                [75]        \n");
-        expected.append("    [15]        [35]    [65]        [85]    \n");
-
-        System.out.println(tree);
-        assertThat(tree.toString(), is(expected.toString()));
     }
 
     private Matcher<BinaryTree.Node> nodeWithValue(final int expected) {

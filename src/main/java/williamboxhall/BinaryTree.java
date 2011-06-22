@@ -62,11 +62,17 @@ public class BinaryTree implements Tree {
     }
 
     private void delete(Node node) {
-        if (node == node.parent.left) {
+        if (node == root) {
+            deleteRoot();
+        } else if (node == node.parent.left) {
             deleteLeft(node.parent);
         } else {
             deleteRight(node.parent);
         }
+    }
+
+    private void deleteRoot() {
+        root = replaceWithChildOf(root);
     }
 
     private void deleteLeft(Node parent) {
